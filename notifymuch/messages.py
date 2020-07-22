@@ -131,7 +131,9 @@ def summary(messages):
         subject = ellipsize(msg.get_header('subject'))
         text = ''
         try:
-            text += msg.get_part(1).decode()[0:80]
+            t = msg.get_part(1).decode()
+            t = t.lstrip('\n')
+            text += t[0:min(len(t), int(config.get('message_length')))] + '...'
         except:
             text += '<UNKNOWN CHARSET>'
 

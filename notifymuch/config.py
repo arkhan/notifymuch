@@ -14,7 +14,8 @@ DEFAULT_CONFIG = {
     'mail_client': 'gnome-terminal -x mutt -y',
     'recency_interval_hours': '48',
     'hidden_tags': 'inbox unread attachment replied sent encrypted signed',
-    'notification_format': "%%T %%t (%%s %%d)"
+    'notification_format': "%%T %%t (%%s %%d)",
+    'message_length': 120
 }
 
 CONFIG = configparser.ConfigParser()

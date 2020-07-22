@@ -51,9 +51,12 @@ hidden_tags
 notification_format
   Format string for notification. Default is ``%%T %%t (%%s %%d)``
 
+message_length
+  Length of message preview
+
 Available message parts
 -----------------------------
-%T
+%%T
   List of tags in square brackets
 
 %%t
@@ -72,4 +75,4 @@ Available message parts
   Absolute time of receiving (eg. ``04:19 22.07.2020``)
 
 %%c
-  First 120 characters of the message
+  Message preview (first ``message_length`` characters of message)
