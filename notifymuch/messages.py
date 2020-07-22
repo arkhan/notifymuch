@@ -124,7 +124,7 @@ def summary(messages):
         date = msg.get_date()
         date_relatively = pretty_date(date)
         # ToDo: Make date format changeable
-        date_absolutely = datetime.datetime.fromtimestamp(date).strftime("%d.%m.%Y %H:%M")
+        date_absolutely = datetime.datetime.fromtimestamp(date).strftime("%H:%M %d.%m.%Y")
         sender = pretty_sender(msg.get_header('from'))
         sender_name = sender[0]
         sender_addr = sender[1]
