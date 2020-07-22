@@ -1,3 +1,4 @@
+import datetime
 from email.utils import parseaddr
 import os
 import time
@@ -98,7 +99,7 @@ def pretty_date(time=None):
 
 def pretty_sender(fromline):
     name, addr = parseaddr(fromline)
-    return name or addr
+    return (name, addr)
 
 
 def pretty_receiver(fromline):
@@ -120,15 +121,39 @@ def summary(messages):
     messages_result = []
     for msg in messages:
         tags = tags_prefix(filter_tags(msg.get_tags()))
-        date = pretty_date(msg.get_date())
+        date = msg.get_date()
+        date_relatively = pretty_date(date)
+        # ToDo: Make date format changeable
+        date_absolutely = datetime.datetime.fromtimestamp(date).strftime("%d.%m.%Y %H:%M")
         sender = pretty_sender(msg.get_header('from'))
+        sender_name = sender[0]
+        sender_addr = sender[1]
         subject = ellipsize(msg.get_header('subject'))
-        messages_result.append('{tags} {subject} ({sender}, {date})'.format(
-            tags=tags,
-            subject=subject,
-            sender=sender,
-            date=date
-        ))
+        format = "%T %t (%s %d)"
+        result = ''
+        skip = False
+        for i in range(len(format)):
+            if skip:
+                skip = False
+                continue
+            if format[i] == '%' and i + 1 < len(format) and not (i > 0 and format[i - 1] == '\\'):
+                skip = True
+                cmd = format[i + 1]
+                if cmd == 'T':
+                    result += tags
+                elif cmd == 't':
+                    result += subject
+                elif cmd == 'S':
+                    result += sender_addr
+                elif cmd == 's':
+                    result += sender_name
+                elif cmd == 'D':
+                    result += date_absolutely
+                elif cmd == 'd':
+                    result += date_relatively
+            else:
+                result += format[i]
+        messages_result.append(result)
     return '\n'.join(messages_result)
 
 
