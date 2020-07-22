@@ -112,7 +112,7 @@ def pretty_receiver(fromline):
 def tags_prefix(tags):
     tags = list(tags)
     if tags:
-        return '[{tags}] '.format(tags=' '.join(tags))
+        return '[{tags}]'.format(tags=' '.join(tags))
     else:
         return ''
 
@@ -129,7 +129,7 @@ def summary(messages):
         sender_name = sender[0]
         sender_addr = sender[1]
         subject = ellipsize(msg.get_header('subject'))
-        format = "%T %t (%s %d)"
+        format = config.get('notification_format')
         result = ''
         skip = False
         for i in range(len(format)):
