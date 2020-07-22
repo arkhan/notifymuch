@@ -47,3 +47,23 @@ recency_interval_hours
 hidden_tags
   Tag names that are not shown in the notification. Default is
   ``inbox unread attachment replied sent encrypted signed``.
+
+notification_format
+  Format string for notification. Default is ``%%T %%t (%%s %%d)``
+
+Available message parts
+-----------------------------
+%T
+  List of tags in square brackets
+
+%%t
+  Subject of message
+
+%%S
+  Address of sender
+
+%%s
+  Name of sender
+
+%%d
+  Relative time of receiving (eg. ``57 minutes ago``)
