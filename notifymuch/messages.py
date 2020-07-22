@@ -129,6 +129,12 @@ def summary(messages):
         sender_name = sender[0]
         sender_addr = sender[1]
         subject = ellipsize(msg.get_header('subject'))
+        text = ''
+        try:
+            text += msg.get_part(1).decode()[0:80]
+        except:
+            text += '<UNKNOWN CHARSET>'
+
         format = config.get('notification_format')
         result = ''
         skip = False
@@ -151,6 +157,8 @@ def summary(messages):
                     result += date_absolutely
                 elif cmd == 'd':
                     result += date_relatively
+                elif cmd == 'c':
+                    result += text
             else:
                 result += format[i]
         messages_result.append(result)

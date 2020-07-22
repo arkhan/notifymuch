@@ -70,3 +70,6 @@ Available message parts
 
 %%D
   Absolute time of receiving (eg. ``04:19 22.07.2020``)
+
+%%c
+  First 120 characters of the message
