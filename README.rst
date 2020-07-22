@@ -67,3 +67,6 @@ Available message parts
 
 %%d
   Relative time of receiving (eg. ``57 minutes ago``)
+
+%%D
+  Absolute time of receiving (eg. ``04:19 22.07.2020``)
