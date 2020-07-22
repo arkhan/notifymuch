@@ -2,6 +2,7 @@ from email.utils import parseaddr
 import os
 import time
 import shelve
+import re
 import notmuch
 from gi.repository import GLib
 from notifymuch import config
@@ -100,6 +101,13 @@ def pretty_sender(fromline):
     return name or addr
 
 
+def pretty_receiver(fromline):
+    regex = r"(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|\"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"
+    matches = re.findall(regex, fromline)
+    return matches[0]
+
+
+
 def tags_prefix(tags):
     tags = list(tags)
     if tags:
@@ -109,12 +117,19 @@ def tags_prefix(tags):
 
 
 def summary(messages):
-    return '\n'.join('{tags}{subject} ({sender}, {date})'.format(
-                subject=ellipsize(message.get_header('subject')),
-                sender=pretty_sender(message.get_header('from')),
-                date=pretty_date(message.get_date()),
-                tags=tags_prefix(filter_tags(message.get_tags())))
-            for message in messages)
+    messages_result = []
+    for msg in messages:
+        tags = tags_prefix(filter_tags(msg.get_tags()))
+        date = pretty_date(msg.get_date())
+        sender = pretty_sender(msg.get_header('from'))
+        subject = ellipsize(msg.get_header('subject'))
+        messages_result.append('{tags} {subject} ({sender}, {date})'.format(
+            tags=tags,
+            subject=subject,
+            sender=sender,
+            date=date
+        ))
+    return '\n'.join(messages_result)
 
 
 class Messages:
