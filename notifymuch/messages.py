@@ -171,7 +171,10 @@ class Messages:
     def __init__(self):
         db = notmuch.Database()
         self.query = notmuch.Query(db, config.get('query'))
-        self.query.set_sort(notmuch.Query.SORT.OLDEST_FIRST)
+        if config.get('sort') == "oldest":
+            self.query.set_sort(notmuch.Query.SORT.OLDEST_FIRST)
+        else:
+            self.query.set_sort(notmuch.Query.SORT.NEWEST_FIRST)
 
     def count(self):
         return self.query.count_messages()

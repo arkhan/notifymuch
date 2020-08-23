@@ -11,6 +11,7 @@ CONFIG_FILE = os.path.join(CONFIG_DIR, 'notifymuch.cfg')
 
 DEFAULT_CONFIG = {
     'query': 'is:unread and is:inbox',
+    'sort': 'oldest', 
     'mail_client': 'gnome-terminal -x mutt -y',
     'recency_interval_hours': '48',
     'hidden_tags': 'inbox unread attachment replied sent encrypted signed',
