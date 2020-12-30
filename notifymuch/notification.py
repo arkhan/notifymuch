@@ -35,7 +35,7 @@ class NotifymuchNotification(Gio.Application):
                 self.ICON,
                 self.ICON_SIZE,
                 0)
-        self.icon_filename = icon.get_filename()
+        self.icon_filename = icon and icon.get_filename() or None
 
         self.notification = Notify.Notification.new('', '', self.icon_filename)
         self.notification.set_category('email.arrived')
